@@ -1,0 +1,189 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Cliente {
+  codCliente              Int @id @default(autoincrement())
+  nombreCliente           String
+  dni                     Int
+  telefono                Int
+  fechaHoraBajaCliente    DateTime?
+  direccion               Direccion[]   
+  usuario                 Usuario        @relation(fields: [codUsuario], references: [codUsuario])
+  codUsuario              Int            @unique
+  medioPago               MedioPago[]
+  Pedido                  Pedido[]
+  listaFav                ListaFavorito? 
+  codListaFavorito        Int? @unique
+}
+
+model Usuario{
+  codUsuario              Int @id @default(autoincrement())
+  nombreUsuario           String
+  contraseñaUsuario       String
+  emailUsuario            String  @unique
+  fechaRegistroUsuario    DateTime @default(now())
+  codRolUsuario           Int
+  rolUsuario              RolUsuario @relation(fields: [codRolUsuario], references: [codRolUsuario])
+  cliente                 Cliente?
+   
+}
+
+model RolUsuario {
+  codRolUsuario           Int @id @default(autoincrement())
+  nombreRolUsuario        String
+  fechaHoraBajaRol        DateTime?
+  permisoUsuario          String[]
+  activo                  Boolean
+  verificado              Boolean
+  tokenVerificacion       String
+  Usuarios                Usuario[]
+}
+
+model Direccion {
+  codigoDireccion         Int @id @default(autoincrement())  
+  calle                   String
+  ciudad                  String
+  localidad               String
+  pais                    String
+  codigoPostal            Int
+  codCliente              Int
+  clienteDir              Cliente @relation(fields:[codCliente], references: [codCliente])
+  envioPedido             EnvioPedido[]
+}
+
+model Pedido {
+  codPedido               Int @id @default(autoincrement())
+  impuestoSobreVenta      Float
+  envioGratuito           Boolean
+  montoTotal              Float
+  fechaAltaPedido         DateTime @default(now())
+  codCliente              Int
+  codCarritoCompra        Int @unique
+  codEstadoPedido         Int
+  cliente                 Cliente @relation(fields: [codCliente], references: [codCliente])
+  carritoCompra           CarritoCompras @relation(fields: [codCarritoCompra], references: [codCarritoCompra])
+  estadoPedido            EstadoPedido @relation(fields:[codEstadoPedido], references: [codEstadoPedido])   
+  articuloPedido          ArticuloPedido[]
+}
+
+
+model EstadoPedido {
+  codEstadoPedido         Int @id @default(autoincrement())
+  nombreEstadoPedido      String
+  fechaHoraBajaEP         DateTime?
+  pedidos                 Pedido[]
+}
+
+
+model CarritoCompras {
+  codCarritoCompra        Int @id @default(autoincrement())
+  montoCarritoCompra      Float
+  codPedido               Int @unique
+  pedido                  Pedido?   
+  articuloPedido          ArticuloPedido[]
+}
+
+
+model ListaFavorito{
+  codListaFavorito        Int @id @default(autoincrement())
+  nombreListaFavorito     String
+  codCliente              Int @unique
+  cliente                 Cliente @relation(fields:[codCliente], references:[codCliente])
+  articulo                Articulo[]
+}
+
+model Articulo {
+  codArticulo             Int @id @default(autoincrement())
+  nombreArticulo          String
+  descripcion             String
+  stock                   Int
+  precio                  Float
+  articuloPedido          ArticuloPedido[]
+  listaFav                ListaFavorito[]
+  categorias         Categoria[] @relation("ArticuloCategoria")
+  codCategoria            Int
+}
+
+model Categoria{
+  codCategoria            Int @id @default(autoincrement())
+  nombreCategoria         String
+  descripcion             String
+  fechaBajaCategoria      DateTime?
+  articulos               Articulo[]  @relation("ArticuloCategoria")
+  
+}
+
+model ArticuloPedido {
+  cantidadArtPed          Int
+  nroRenglon              Int @id @default(autoincrement())
+  montoArticuloPe         Float
+  PrecioUnitario          Float
+  codPedido               Int
+  codCarritoCompra        Int
+  codArticulo             Int
+  pedido                  Pedido @relation(fields:[codPedido], references:[codPedido])
+  carritoCompra           CarritoCompras @relation(fields:[codCarritoCompra], references:[codCarritoCompra])
+  articulo                Articulo @relation(fields:[codArticulo], references:[codArticulo])        
+
+}
+
+
+model EnvioPedido {
+  codEnvio                Int @id @default(autoincrement())
+  empresaEnvio            String
+  costoEnvio              Float
+  fechaSalida             DateTime? 
+  fechaEntregaEstimada    DateTime
+  fechaEntregaBaja        DateTime?
+  codEstadoEnvio          Int
+  codigoDireccion         Int
+  estadoEnvio             EstadoEnvio @relation(fields:[codEstadoEnvio],references:[codEstadoEnvio])     
+  direccion               Direccion @relation(fields:[codigoDireccion], references:[codigoDireccion])
+}
+
+model EstadoEnvio {
+  codEstadoEnvio          Int @id @default(autoincrement())
+  nombreEstadoEnvio       String
+  fechaHoraBajaEE         DateTime?
+  envioPedido             EnvioPedido[]
+}
+
+model MedioPago{
+  codMedioPago            Int @id @default(autoincrement())
+  nombreTipoMedioPago     String
+  fechaHoraBajaMedioPago  DateTime?
+  clientes                Cliente[]
+  Pago                    Pago[]
+}
+
+model Pago{
+  codPago                 Int @id @default(autoincrement())
+  nombreTipoMedioPago     String
+  montoPagado             Float
+  transaccionId           Int
+  fechaHoraPago           DateTime?
+  codMedioPago            Int
+  codEstadoPago           Int
+  medioPago               MedioPago @relation(fields:[codMedioPago], references:[codMedioPago])
+  estadoPago              EstadoPago @relation(fields:[codEstadoPago], references:[codEstadoPago])
+}
+
+model EstadoPago{
+  codEstadoPago           Int @id @default(autoincrement())
+  nombreEstadoPago        String
+  fechaHoraBajaEP         DateTime?
+  pagos                   Pago[]
+}

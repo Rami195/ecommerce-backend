@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "@prisma/client": "^6.10.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.0.0",
+    "express": "^5.1.0",
+    "prisma": "^6.10.1"
+  },
+  "scripts": {
+  "dev": "node src/index.js"
+}
+}
