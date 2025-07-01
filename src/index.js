@@ -13,8 +13,10 @@ app.get('/', (req, res) => {
   res.send('API funcionando 🚀');
 });
 
-// Ejemplo de endpoint de prueba:
+//Rutas
+const articuloRouter= require('./routes/articulo.routes')
 
+app.use('/api/articulos', articuloRouter);
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
