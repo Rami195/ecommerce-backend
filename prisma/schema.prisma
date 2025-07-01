@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -113,8 +112,8 @@ model Articulo {
   precio                  Float
   articuloPedido          ArticuloPedido[]
   listaFav                ListaFavorito[]
-  categorias         Categoria[] @relation("ArticuloCategoria")
-  codCategoria            Int
+  categorias              Categoria[] @relation("ArticuloCategoria")
+
 }
 
 model Categoria{
