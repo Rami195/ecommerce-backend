@@ -1,10 +1,7 @@
-const {v4: uuidv4 } = require('uuid');
-const prisma = require('../prismaClient');
-const bcrypt = require('bcrypt');
-
+const prisma = require('../prismaClient'); 
 // crear un nuevo usuario
 
-const createUsuario = async (req,res) => {
+exports.createUsuario = async (req,res) => {
     const{nombreUsuario,emailUsuario,contraseñaUsuario,codRolUsuario} = req.body;
 
     try {
@@ -48,7 +45,7 @@ const createUsuario = async (req,res) => {
 
 //obtener todos los usuarios
 
-const getUsuarios = async (req,res) => {
+exports.getUsuarios = async (req,res) => {
     try {
         const usuarios = await prisma.usuario.findMany({
             include: {
@@ -66,7 +63,7 @@ const getUsuarios = async (req,res) => {
 
 // obterner un usuario por id
 
-const getUsuarioById = async (req,res) => {
+exports.getUsuarioById = async (req,res) => {
     const { id } = req.params;
     try {
         const usuario = await prisma.usuario.findUnique({
@@ -92,7 +89,7 @@ const getUsuarioById = async (req,res) => {
 
 // Modificar un usuario
 
-const updateUsuario = async (req,res) => {
+exports.updateUsuario = async (req,res) => {
     const { id } = req.params;
     const { nombreUsuario,emailUsuario,contraseñaUsuario } = req.body;
 
