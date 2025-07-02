@@ -70,16 +70,20 @@ exports.updateArticulo = async (req, res) => {
 
 //DELETE
 
-exports.deleteArticulo =async (req, res)=>{
-  try{
-    const codArticulo= parseInt(req.params.id)
-    const artEliminado= await prisma.articulo.update({
-      where: {codArticulo},
+exports.deleteArticulo = async (req, res) => {
+  try {
+    const codArticulo = parseInt(req.params.id)
+    const artEliminado = await prisma.articulo.update({
+      where: { codArticulo },
       data: {
         fechaBajaArticulo: new Date()
       }
     })
-  }catch(error){
+    res.status(200).json({
+      message: 'Articulo desactivado correctamente',
+      articulo: artEliminado,
+    });
+  } catch (error) {
     console.error('Error al eliminar el articulo:', error);
     res.status(500).json({ error: 'Error al eliminar el articulo' });
   }
