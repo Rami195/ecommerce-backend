@@ -34,6 +34,10 @@ model Usuario{
   contraseñaUsuario       String
   emailUsuario            String  @unique
   fechaRegistroUsuario    DateTime @default(now())
+  ultimoRegistroUsuario   DateTime?
+  activo                  Boolean @default(true)
+  verificado              Boolean @default(false)
+  tokenVerificacion       String?
   codRolUsuario           Int
   rolUsuario              RolUsuario @relation(fields: [codRolUsuario], references: [codRolUsuario])
   cliente                 Cliente?
@@ -45,9 +49,6 @@ model RolUsuario {
   nombreRolUsuario        String
   fechaHoraBajaRol        DateTime?
   permisoUsuario          String[]
-  activo                  Boolean
-  verificado              Boolean
-  tokenVerificacion       String
   Usuarios                Usuario[]
 }
 
