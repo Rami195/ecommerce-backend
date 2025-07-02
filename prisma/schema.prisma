@@ -110,6 +110,7 @@ model Articulo {
   descripcion             String
   stock                   Int
   precio                  Float
+  fechaBajaArticulo       DateTime?
   articuloPedido          ArticuloPedido[]
   listaFav                ListaFavorito[]
   categorias              Categoria[] @relation("ArticuloCategoria")
