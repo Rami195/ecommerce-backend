@@ -18,6 +18,10 @@ CREATE TABLE "Usuario" (
     "contraseñaUsuario" TEXT NOT NULL,
     "emailUsuario" TEXT NOT NULL,
     "fechaRegistroUsuario" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "ultimoRegistroUsuario" TIMESTAMP(3),
+    "activo" BOOLEAN NOT NULL DEFAULT true,
+    "verificado" BOOLEAN NOT NULL DEFAULT false,
+    "tokenVerificacion" TEXT,
     "codRolUsuario" INTEGER NOT NULL,
 
     CONSTRAINT "Usuario_pkey" PRIMARY KEY ("codUsuario")
@@ -29,9 +33,6 @@ CREATE TABLE "RolUsuario" (
     "nombreRolUsuario" TEXT NOT NULL,
     "fechaHoraBajaRol" TIMESTAMP(3),
     "permisoUsuario" TEXT[],
-    "activo" BOOLEAN NOT NULL,
-    "verificado" BOOLEAN NOT NULL,
-    "tokenVerificacion" TEXT NOT NULL,
 
     CONSTRAINT "RolUsuario_pkey" PRIMARY KEY ("codRolUsuario")
 );
@@ -76,7 +77,8 @@ CREATE TABLE "EstadoPedido" (
 CREATE TABLE "CarritoCompras" (
     "codCarritoCompra" SERIAL NOT NULL,
     "montoCarritoCompra" DOUBLE PRECISION NOT NULL,
-    "codPedido" INTEGER NOT NULL,
+    "codPedido" INTEGER,
+    "codCliente" INTEGER NOT NULL,
 
     CONSTRAINT "CarritoCompras_pkey" PRIMARY KEY ("codCarritoCompra")
 );
@@ -97,7 +99,7 @@ CREATE TABLE "Articulo" (
     "descripcion" TEXT NOT NULL,
     "stock" INTEGER NOT NULL,
     "precio" DOUBLE PRECISION NOT NULL,
-    "codCategoria" INTEGER NOT NULL,
+    "fechaBajaArticulo" TIMESTAMP(3),
 
     CONSTRAINT "Articulo_pkey" PRIMARY KEY ("codArticulo")
 );
@@ -216,7 +218,13 @@ CREATE UNIQUE INDEX "Usuario_emailUsuario_key" ON "Usuario"("emailUsuario");
 CREATE UNIQUE INDEX "Pedido_codCarritoCompra_key" ON "Pedido"("codCarritoCompra");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "EstadoPedido_nombreEstadoPedido_key" ON "EstadoPedido"("nombreEstadoPedido");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "CarritoCompras_codPedido_key" ON "CarritoCompras"("codPedido");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "CarritoCompras_codCliente_key" ON "CarritoCompras"("codCliente");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "ListaFavorito_codCliente_key" ON "ListaFavorito"("codCliente");
@@ -247,6 +255,9 @@ ALTER TABLE "Pedido" ADD CONSTRAINT "Pedido_codCarritoCompra_fkey" FOREIGN KEY (
 
 -- AddForeignKey
 ALTER TABLE "Pedido" ADD CONSTRAINT "Pedido_codEstadoPedido_fkey" FOREIGN KEY ("codEstadoPedido") REFERENCES "EstadoPedido"("codEstadoPedido") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CarritoCompras" ADD CONSTRAINT "CarritoCompras_codCliente_fkey" FOREIGN KEY ("codCliente") REFERENCES "Cliente"("codCliente") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ListaFavorito" ADD CONSTRAINT "ListaFavorito_codCliente_fkey" FOREIGN KEY ("codCliente") REFERENCES "Cliente"("codCliente") ON DELETE RESTRICT ON UPDATE CASCADE;

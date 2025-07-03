@@ -18,12 +18,17 @@ const articuloRouter= require('./routes/articulo.routes')
 const categoriaRouter= require('./routes/categoria.routes')
 const clienteRouter= require('./routes/cliente.routes')
 const usuarioRouter= require('./routes/usuario.routes')
-
+const articuloPedido= require('./routes/articuloPedido.routes')
+const pedido = require('./routes/carrito.routes')
+const carrito = require('./routes/carrito.routes')
 
 app.use('/api/cliente', clienteRouter);
 app.use('/api/articulos', articuloRouter);
 app.use('/api/categoria',categoriaRouter);
 app.use('/api/usuario', usuarioRouter);
+app.use('/api/articuloPedido', articuloPedido);
+app.use('/api/pedido',pedido);
+app.use('/api/carrito',carrito);
 
 
 app.listen(PORT, () => {
