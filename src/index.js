@@ -20,7 +20,7 @@ const clienteRouter= require('./routes/cliente.routes')
 const usuarioRouter= require('./routes/usuario.routes')
 const rolUsuarioRouter= require('./routes/rolUsuario.routes')
 const articuloPedido= require('./routes/articuloPedido.routes')
-const pedido = require('./routes/carrito.routes')
+const pedido = require('./routes/pedido.routes')
 const carrito = require('./routes/carrito.routes')
 
 app.use('/api/cliente', clienteRouter);
