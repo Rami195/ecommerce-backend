@@ -3,6 +3,7 @@ const prisma = require('../prismaClient');
 // Crear nuevo RolUsuario
 
 const createRolUsuario = async (req,res) =>{
+    console.log('Body recibido:', req.body);
     const {nombreRolUsuario, permisoUsuario} = req.body;
 
     try {
