@@ -39,6 +39,7 @@ model Usuario{
   activo                  Boolean @default(true)
   verificado              Boolean @default(false)
   tokenVerificacion       String?
+  fechaHoraBajaUsuario    DateTime?
   codRolUsuario           Int
   rolUsuario              RolUsuario @relation(fields: [codRolUsuario], references: [codRolUsuario])
   cliente                 Cliente?
@@ -47,7 +48,7 @@ model Usuario{
 
 model RolUsuario {
   codRolUsuario           Int @id @default(autoincrement())
-  nombreRolUsuario        String
+  nombreRolUsuario        String @unique
   fechaHoraBajaRol        DateTime?
   permisoUsuario          String[]
   Usuarios                Usuario[]

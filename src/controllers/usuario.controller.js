@@ -1,7 +1,10 @@
-const prisma = require('../prismaClient'); 
+const prisma = require('../prismaClient');
+const bcrypt = require('bcrypt');
+const { v4: uuidv4 } = require('uuid');
+
 // crear un nuevo usuario
 
-exports.createUsuario = async (req,res) => {
+const createUsuario = async (req,res) => {
     const{nombreUsuario,emailUsuario,contraseñaUsuario,codRolUsuario} = req.body;
 
     try {
@@ -45,9 +48,12 @@ exports.createUsuario = async (req,res) => {
 
 //obtener todos los usuarios
 
-exports.getUsuarios = async (req,res) => {
+const getUsuarios = async (req,res) => {
     try {
         const usuarios = await prisma.usuario.findMany({
+            where: {
+                fechaHoraBajaUsuario: null
+            },
             include: {
                 rolUsuario: true,
                 cliente: true
@@ -63,7 +69,7 @@ exports.getUsuarios = async (req,res) => {
 
 // obterner un usuario por id
 
-exports.getUsuarioById = async (req,res) => {
+const getUsuarioById = async (req,res) => {
     const { id } = req.params;
     try {
         const usuario = await prisma.usuario.findUnique({
@@ -89,7 +95,7 @@ exports.getUsuarioById = async (req,res) => {
 
 // Modificar un usuario
 
-exports.updateUsuario = async (req,res) => {
+const updateUsuario = async (req,res) => {
     const { id } = req.params;
     const { nombreUsuario,emailUsuario,contraseñaUsuario } = req.body;
 
@@ -114,9 +120,33 @@ exports.updateUsuario = async (req,res) => {
 
 // eliminar Usuario
 
-/*
 const deleteUsuario = async (req,res) => {
     const { id } = req.params;
-    const usuarioEliminado 
+    try {
+        bajaUsuario = await prisma.usuario.update({
+            where: {
+                codUsuario: parseInt(id)
+            },
+            data:{
+                activo: false,
+                fechaHoraBajaUsuario: new Date()
+            }
+        });
+
+        res.status(200).json({mensaje:'Usuario dado de baja.', usuario: bajaUsuario});
+    } catch (error) {
+        res.status(500).json({ error: 'Error al dar de baja el usuario.' });        
+    }
+};
+
+
+// faltaria login usuario
+
+
+module.exports ={
+    createUsuario,
+    getUsuarios,
+    getUsuarioById,
+    updateUsuario,
+    deleteUsuario,
 }
-*/
