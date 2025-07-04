@@ -8,15 +8,35 @@ exports.getArticulos = async (req, res) => {
     }); // Obtiene todos los artículos de la base de datos
     res.json(articulos); // Envía los artículos como respuesta en formato JSON
   } catch (error) {
-    console.error('Error al obtener artículos:', error); // Registra el error en la consola
-    res.status(500).json({ error: 'Error al obtener artículos' }); // Envía un error 500 si ocurre un problema
+    console.error('Error al obtener artículos:', error);
+    res.status(500).json({ error: 'Error al obtener artículos' });
   }
 }
+//GET 1 ARTICULO
+exports.getByArticulo = async (req, res) => {
+  try {
+    const codArticulo = parseInt(req.params.id)
+    const art = await prisma.articulo.findUnique({
+      where: {
+        codArticulo,
+        fechaBajaArticulo: null
+      }
+    })
+    if(!art){
+      res.status(404).json({error:'El articulo no se ha encontrado'})
+    }
+    res.json(art)
 
+  } catch (error) {
+    console.error('Error al obtener artículos:', error);
+    res.status(500).json({ error: 'Error al obtener artículos' });
+  }
+}
 //CREATE
 exports.createArticulo = async (req, res) => { //ruta del art
   try {
     const { nombreArticulo, descripcion, stock, precio, codCategoria } = req.body //lo que envia el cliente
+
     const nuevoArt = await prisma.articulo.create({ //nuevo articulo
       data: {
         nombreArticulo,
@@ -30,7 +50,7 @@ exports.createArticulo = async (req, res) => { //ruta del art
     })
     res.status(201).json(nuevoArt) //status 201 es creado correctamente
   } catch (error) {
-    console.error('Error al crear el articulo')
+    console.error('Error al crear el articulo', error)
     res.status(500).json({ error: 'Error al crear el articulo' })
   }
 }

@@ -21,13 +21,37 @@ exports.createCategoria = async (req, res) => {
 //GET CATEGORIAS
 exports.getCategorias = async (req, res) => {
     try {
-        const categorias = await prisma.categoria.findMany()
+        const categorias = await prisma.categoria.findMany({
+            where: {
+                fechaBajaCategoria: null
+            }
+        })
         res.json(categorias)
     } catch (error) {
         console.error('Error al obtener las categorias')
         res.status(500).json({ error: 'Error al obtener las categorias' })
     }
 }
+//GET 1 CATEGORIA
+exports.getByCategoria =async(req,res)=>{
+    try{
+        const codCategoria = parseInt(req.params.id)
+        const cat= await prisma.categoria.findUnique({
+            where: {
+                codCategoria,
+                fechaBajaCategoria: null
+            }
+        })
+        if(!cat){
+            return  res.status(404).json({ error: 'Categoria no encontrada'});
+        }
+        res.json(cat)
+    }catch(error){
+        console.error('Error al obtener las categorias')
+        res.status(500).json({ error: 'Error al obtener las categorias' })
+    }
+}
+
 
 //UPDATE CATEGORIA
 exports.updateCategoria = async (req, res) => {
