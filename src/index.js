@@ -22,6 +22,8 @@ const rolUsuarioRouter= require('./routes/rolUsuario.routes')
 const articuloPedido= require('./routes/articuloPedido.routes')
 const pedido = require('./routes/pedido.routes')
 const carrito = require('./routes/carrito.routes')
+const registro = require('./routes/registro.routes')
+const direccion = require('./routes/direccion.routes')
 
 app.use('/api/cliente', clienteRouter);
 app.use('/api/articulos', articuloRouter);
@@ -31,6 +33,9 @@ app.use('/api/rolUsuario', rolUsuarioRouter);
 app.use('/api/articuloPedido', articuloPedido);
 app.use('/api/pedido',pedido);
 app.use('/api/carrito',carrito);
+app.use('/api/registro',registro);
+app.use('/api/direccion',direccion);
+
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);

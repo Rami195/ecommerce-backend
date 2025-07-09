@@ -22,6 +22,7 @@ CREATE TABLE "Usuario" (
     "activo" BOOLEAN NOT NULL DEFAULT true,
     "verificado" BOOLEAN NOT NULL DEFAULT false,
     "tokenVerificacion" TEXT,
+    "fechaHoraBajaUsuario" TIMESTAMP(3),
     "codRolUsuario" INTEGER NOT NULL,
 
     CONSTRAINT "Usuario_pkey" PRIMARY KEY ("codUsuario")
@@ -213,6 +214,9 @@ CREATE UNIQUE INDEX "Cliente_codListaFavorito_key" ON "Cliente"("codListaFavorit
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Usuario_emailUsuario_key" ON "Usuario"("emailUsuario");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "RolUsuario_nombreRolUsuario_key" ON "RolUsuario"("nombreRolUsuario");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Pedido_codCarritoCompra_key" ON "Pedido"("codCarritoCompra");
