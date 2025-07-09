@@ -55,7 +55,7 @@ const getRolesUsuario = async (req,res) =>{
 const getRolesUsuarioById = async (req,res) => {
     const {id} = req.params;
     try {
-        const rolUsuarioId = await prisma.rolUsuario.findUnique({
+        const rolUsuarioId = await prisma.rolUsuario.findFirst({
             where:{
                 codRolUsuario: parseInt(id),
                 fechaHoraBajaRol: null
@@ -82,7 +82,6 @@ const updateRolUsuario = async (req,res) => {
         const rolUsuarioActualizado = await prisma.rolUsuario.update({
             where: {
                 codRolUsuario: parseInt(id),
-                fechaHoraBajaRol: null
             },
             data:{
                 nombreRolUsuario,
@@ -105,6 +104,19 @@ const deleteRolUsuario = async (req,res) =>{
     const {id} = req.params;
 
     try {
+
+        const rolUsuarioExistente = await prisma.rolUsuario.findFirst({
+            where: {
+                codRolUsuario: parseInt(id),
+                fechaHoraBajaRol: null
+            },
+        });
+
+        if (!rolUsuarioExistente) {
+            return res.status(404).json({ error: 'Rol de usuario no encontrado o ya dado de baja' });
+        }
+
+
         const bajaRolUsuario = await prisma.rolUsuario.update({
             where:{
                 codRolUsuario: parseInt(id)

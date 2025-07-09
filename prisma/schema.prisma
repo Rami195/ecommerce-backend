@@ -17,7 +17,7 @@ model Cliente {
   codCliente           Int              @id @default(autoincrement())
   nombreCliente        String
   dni                  Int
-  telefono             Int
+  telefono             String
   fechaHoraBajaCliente DateTime?
   direccion            Direccion[]   
   usuario              Usuario          @relation(fields: [codUsuario], references: [codUsuario])
@@ -61,6 +61,7 @@ model Direccion {
   localidad               String
   pais                    String
   codigoPostal            Int
+  fechaHoraBajaDireccion  DateTime?
   codCliente              Int
   clienteDir              Cliente @relation(fields:[codCliente], references: [codCliente])
   envioPedido             EnvioPedido[]

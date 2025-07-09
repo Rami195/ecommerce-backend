@@ -8,7 +8,9 @@ const getClientes = async (req, res) => {
                 where: {
                     fechaHoraBajaCliente: null,
                 },
-                include: { usuario: true }
+                include: { usuario: true,
+                           direccion: true
+                }
             });
         res.json(clientes);
     } catch (error) {
@@ -21,11 +23,14 @@ const getClientes = async (req, res) => {
 const getClienteById = async (req, res) => {
     const { id } = req.params;
     try {
-        const cliente = await prisma.cliente.findUnique({
+        const cliente = await prisma.cliente.findFirst({
             where: {
-                codCliente: parseInt(id)
+                codCliente: parseInt(id),
+                fechaHoraBajaCliente:null
             },
-            include: { usuario: true }
+            include: { usuario: true,
+                       direccion: true  
+             }
         });
         if (!cliente){
             return res.status(404).json({ error: 'Cliente no encontrado'});
@@ -77,7 +82,7 @@ const updateCliente = async (req, res) => {
 
             data: {
                 nombreCliente,
-                dni,
+                dni, 
                 telefono,
             },
         });
@@ -91,24 +96,34 @@ const updateCliente = async (req, res) => {
 
 const deleteCliente = async (req, res) => {
     const { id } = req.params;
+
     try {
-        const baja = await prisma.cliente.update({
+        const clienteExistente = await prisma.cliente.findFirst({
             where: {
                 codCliente: parseInt(id),
                 fechaHoraBajaCliente: null
+            }
+        });
+
+        if (!clienteExistente) {
+            return res.status(404).json({ error: 'Cliente no encontrado o ya dado de baja' });
+        }
+
+        const baja = await prisma.cliente.update({
+            where: {
+                codCliente: parseInt(id)
             },
             data: {
-                fechaHoraBajaCliente: new Date(),
-            },
+                fechaHoraBajaCliente: new Date()
+            }
         });
-        res.status(201).json({ mensaje: 'Cliente dado de baja.', cliente: baja});
+
+        res.status(200).json({ mensaje: 'Cliente dado de baja.', cliente: baja });
+
     } catch (error) {
-        if (error.code === 'P2025') { // Prisma: record not fpund
-            return res.status(404).json({ error: 'cliente no encontrado o ya dado de baja'});
-        }
         res.status(500).json({ error: 'Error al dar de baja al cliente.' });
     }
-}
+};
 
 module.exports ={
     getClientes,
