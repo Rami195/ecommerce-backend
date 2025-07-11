@@ -3,7 +3,7 @@ CREATE TABLE "Cliente" (
     "codCliente" SERIAL NOT NULL,
     "nombreCliente" TEXT NOT NULL,
     "dni" INTEGER NOT NULL,
-    "telefono" INTEGER NOT NULL,
+    "telefono" TEXT NOT NULL,
     "fechaHoraBajaCliente" TIMESTAMP(3),
     "codUsuario" INTEGER NOT NULL,
     "codListaFavorito" INTEGER,
@@ -46,6 +46,7 @@ CREATE TABLE "Direccion" (
     "localidad" TEXT NOT NULL,
     "pais" TEXT NOT NULL,
     "codigoPostal" INTEGER NOT NULL,
+    "fechaHoraBajaDireccion" TIMESTAMP(3),
     "codCliente" INTEGER NOT NULL,
 
     CONSTRAINT "Direccion_pkey" PRIMARY KEY ("codigoDireccion")
@@ -80,6 +81,7 @@ CREATE TABLE "CarritoCompras" (
     "montoCarritoCompra" DOUBLE PRECISION NOT NULL,
     "codPedido" INTEGER,
     "codCliente" INTEGER NOT NULL,
+    "activo" BOOLEAN NOT NULL DEFAULT true,
 
     CONSTRAINT "CarritoCompras_pkey" PRIMARY KEY ("codCarritoCompra")
 );
@@ -226,9 +228,6 @@ CREATE UNIQUE INDEX "EstadoPedido_nombreEstadoPedido_key" ON "EstadoPedido"("nom
 
 -- CreateIndex
 CREATE UNIQUE INDEX "CarritoCompras_codPedido_key" ON "CarritoCompras"("codPedido");
-
--- CreateIndex
-CREATE UNIQUE INDEX "CarritoCompras_codCliente_key" ON "CarritoCompras"("codCliente");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "ListaFavorito_codCliente_key" ON "ListaFavorito"("codCliente");

@@ -26,7 +26,7 @@ model Cliente {
   Pedido               Pedido[]
   listaFav             ListaFavorito? 
   codListaFavorito     Int?             @unique
-  carrito              CarritoCompras?
+  carritos             CarritoCompras[] // 1:N
 }
 
 model Usuario{
@@ -92,14 +92,16 @@ model EstadoPedido {
 
 
 
+
 model CarritoCompras {
   codCarritoCompra     Int              @id @default(autoincrement())
   montoCarritoCompra   Float
   codPedido            Int?             @unique
   pedido               Pedido?
   articuloPedido       ArticuloPedido[]
-  codCliente           Int              @unique
+  codCliente           Int
   cliente              Cliente          @relation(fields: [codCliente], references: [codCliente])
+  activo               Boolean          @default(true)
 }
 
 

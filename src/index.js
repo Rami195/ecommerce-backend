@@ -19,7 +19,7 @@ const categoriaRouter= require('./routes/categoria.routes')
 const clienteRouter= require('./routes/cliente.routes')
 const usuarioRouter= require('./routes/usuario.routes')
 const rolUsuarioRouter= require('./routes/rolUsuario.routes')
-const articuloPedido= require('./routes/articuloPedido.routes')
+
 const pedido = require('./routes/pedido.routes')
 const carrito = require('./routes/carrito.routes')
 const registro = require('./routes/registro.routes')
@@ -30,7 +30,6 @@ app.use('/api/articulos', articuloRouter);
 app.use('/api/categoria',categoriaRouter);
 app.use('/api/usuario', usuarioRouter);
 app.use('/api/rolUsuario', rolUsuarioRouter);
-app.use('/api/articuloPedido', articuloPedido);
 app.use('/api/pedido',pedido);
 app.use('/api/carrito',carrito);
 app.use('/api/registro',registro);

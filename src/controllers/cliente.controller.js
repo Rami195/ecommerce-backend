@@ -3,15 +3,16 @@ const prisma = require('../prismaClient');
 // obtener todos los clientes activos
 
 const getClientes = async (req, res) => {
-        try {
-            const clientes = await prisma.cliente.findMany({
-                where: {
-                    fechaHoraBajaCliente: null,
-                },
-                include: { usuario: true,
-                           direccion: true
-                }
-            });
+    try {
+        const clientes = await prisma.cliente.findMany({
+            where: {
+                fechaHoraBajaCliente: null,
+            },
+            include: {
+                usuario: true,
+                direccion: true
+            }
+        });
         res.json(clientes);
     } catch (error) {
         res.status(500).json({ error: 'Error al obtener los clientes.' });
@@ -26,14 +27,15 @@ const getClienteById = async (req, res) => {
         const cliente = await prisma.cliente.findFirst({
             where: {
                 codCliente: parseInt(id),
-                fechaHoraBajaCliente:null
+                fechaHoraBajaCliente: null
             },
-            include: { usuario: true,
-                       direccion: true  
-             }
+            include: {
+                usuario: true,
+                direccion: true
+            }
         });
-        if (!cliente){
-            return res.status(404).json({ error: 'Cliente no encontrado'});
+        if (!cliente) {
+            return res.status(404).json({ error: 'Cliente no encontrado' });
         }
         res.json(cliente);
     } catch (error) {
@@ -44,10 +46,9 @@ const getClienteById = async (req, res) => {
 // Crear Cliente
 
 const createCliente = async (req, res) => {
-    const{nombreCliente,dni,telefono, codUsuario} = req.body;
+    const { nombreCliente, dni, telefono, codUsuario } = req.body;
 
     try {
-
         const existe = await prisma.cliente.findUnique({
             where: { codUsuario }
         });
@@ -60,11 +61,23 @@ const createCliente = async (req, res) => {
                 nombreCliente,
                 dni,
                 telefono,
-                codUsuario, // ya existente
+                codUsuario,
+                carritos: {
+                    create: {
+                        montoCarritoCompra: 0,
+                        activo: true
+                    }
+                }
             },
+            include: {
+                carritos: true
+            }
         });
+
+
         res.status(201).json(nuevoCliente);
     } catch (error) {
+        console.error('Error al crear el cliente con carrito:', error);
         res.status(500).json({ error: 'Error al crear el cliente.' });
     }
 };
@@ -72,8 +85,8 @@ const createCliente = async (req, res) => {
 // modificar cliente
 
 const updateCliente = async (req, res) => {
-    const{ id } = req.params;
-    const{ nombreCliente,dni,telefono } = req.body;
+    const { id } = req.params;
+    const { nombreCliente, dni, telefono } = req.body;
     try {
         const clienteActualizado = await prisma.cliente.update({
             where: {
@@ -82,7 +95,7 @@ const updateCliente = async (req, res) => {
 
             data: {
                 nombreCliente,
-                dni, 
+                dni,
                 telefono,
             },
         });
@@ -125,7 +138,7 @@ const deleteCliente = async (req, res) => {
     }
 };
 
-module.exports ={
+module.exports = {
     getClientes,
     getClienteById,
     createCliente,
