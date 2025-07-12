@@ -140,10 +140,10 @@ model ArticuloPedido {
   nroRenglon              Int @id @default(autoincrement())
   montoArticuloPe         Float
   PrecioUnitario          Float
-  codPedido               Int
+  codPedido               Int?
+  pedido                  Pedido? @relation(fields: [codPedido], references: [codPedido])
   codCarritoCompra        Int
   codArticulo             Int
-  pedido                  Pedido @relation(fields:[codPedido], references:[codPedido])
   carritoCompra           CarritoCompras @relation(fields:[codCarritoCompra], references:[codCarritoCompra])
   articulo                Articulo @relation(fields:[codArticulo], references:[codArticulo])        
 

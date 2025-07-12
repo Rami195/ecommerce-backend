@@ -1,8 +1,9 @@
 const express = require('express')
 const router = express.Router()
 
-const {createCarrito} = require('../controllers/carrito.controller') 
+const {updateCarrito, getCarrito,getCarritoByID} = require('../controllers/carrito.controller') 
 
-router.post('/',createCarrito);
-
+router.put('/:id', updateCarrito)
+router.get('/', getCarrito)
+router.get('/:id', getCarritoByID)
 module.exports = router
