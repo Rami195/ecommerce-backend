@@ -1,7 +1,7 @@
 const express = require('express'); //Importa express para crear el router
 const router = express.Router(); //Crea un nuevo router de Express
 
-const { createRolUsuario, getRolesUsuario, getRolesUsuarioById,updateRolUsuario,deleteRolUsuario } = require('../controllers/rolUsuario.Controller'); //Importa los controladores para manejar las rutas
+const { createRolUsuario, getRolesUsuario, getRolesUsuarioById,updateRolUsuario,deleteRolUsuario } = require('../controllers/rolUsuario.controller'); //Importa los controladores para manejar las rutas
 
 router.post('/', createRolUsuario);
 router.get('/', getRolesUsuario);

@@ -218,7 +218,7 @@ exports.updateEstadoPedido = async (req, res) => {
 
     const transicionesPermitidas = transicionesValidas[estadoActual] || [];
 
-    if (!transicionesPermitidas.include(estadoDestino)) {
+    if (!transicionesPermitidas.includes(estadoDestino)) {
       return res.status(400).json({
         error: `Transición no permitida de "${estadoActual}" a "${estadoDestino}"`
       });

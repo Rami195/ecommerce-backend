@@ -19,22 +19,28 @@ const categoriaRouter= require('./routes/categoria.routes')
 const clienteRouter= require('./routes/cliente.routes')
 const usuarioRouter= require('./routes/usuario.routes')
 const rolUsuarioRouter= require('./routes/rolUsuario.routes')
-
+const articuloPedido= require('./routes/articuloPedido.routes')
 const pedido = require('./routes/pedido.routes')
 const carrito = require('./routes/carrito.routes')
 const registro = require('./routes/registro.routes')
 const direccion = require('./routes/direccion.routes')
+const tipoMedioPago = require('./routes/tipoMedioPago.routes')
+const pago = require('./routes/pago.routes')
+const estadoPago = require('./routes/estadoPago.routes')
 
 app.use('/api/cliente', clienteRouter);
 app.use('/api/articulos', articuloRouter);
 app.use('/api/categoria',categoriaRouter);
 app.use('/api/usuario', usuarioRouter);
 app.use('/api/rolUsuario', rolUsuarioRouter);
+app.use('/api/articuloPedido', articuloPedido);
 app.use('/api/pedido',pedido);
 app.use('/api/carrito',carrito);
 app.use('/api/registro',registro);
 app.use('/api/direccion',direccion);
-
+app.use('/api/tipoMedioPago',tipoMedioPago);
+app.use('/api/pago',pago);
+app.use('/api/estadoPago',estadoPago);
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);

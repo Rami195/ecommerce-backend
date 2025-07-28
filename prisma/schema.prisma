@@ -22,7 +22,8 @@ model Cliente {
   direccion            Direccion[]   
   usuario              Usuario          @relation(fields: [codUsuario], references: [codUsuario])
   codUsuario           Int              @unique
-  medioPago            MedioPago[]
+  codTipoMedioPago     Int
+  tipoMedioPago        TipoMedioPago @relation(fields:[codTipoMedioPago], references:[codTipoMedioPago])
   Pedido               Pedido[]
   listaFav             ListaFavorito? 
   codListaFavorito     Int?             @unique
@@ -170,23 +171,22 @@ model EstadoEnvio {
   envioPedido             EnvioPedido[]
 }
 
-model MedioPago{
-  codMedioPago            Int @id @default(autoincrement())
-  nombreTipoMedioPago     String
-  fechaHoraBajaMedioPago  DateTime?
-  clientes                Cliente[]
-  Pago                    Pago[]
+model TipoMedioPago{
+  codTipoMedioPago            Int @id @default(autoincrement())
+  nombreTipoMedioPago         String
+  fechaHoraBajaTipoMedioPago  DateTime?
+  clientes                    Cliente[]
+  Pago                        Pago[]
 }
 
 model Pago{
   codPago                 Int @id @default(autoincrement())
-  nombreTipoMedioPago     String
   montoPagado             Float
   transaccionId           Int
   fechaHoraPago           DateTime?
-  codMedioPago            Int
+  codTipoMedioPago        Int
   codEstadoPago           Int
-  medioPago               MedioPago @relation(fields:[codMedioPago], references:[codMedioPago])
+  tipoMedioPago           TipoMedioPago @relation(fields:[codTipoMedioPago], references:[codTipoMedioPago])
   estadoPago              EstadoPago @relation(fields:[codEstadoPago], references:[codEstadoPago])
 }
 
