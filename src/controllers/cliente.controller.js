@@ -74,7 +74,6 @@ const createCliente = async (req, res) => {
             }
         });
 
-
         res.status(201).json(nuevoCliente);
     } catch (error) {
         console.error('Error al crear el cliente con carrito:', error);
@@ -99,7 +98,7 @@ const updateCliente = async (req, res) => {
                 telefono,
             },
         });
-        res.status(201).json(clienteActualizado);
+        res.status(200).json(clienteActualizado);
     } catch (error) {
         res.status(500).json({ error: 'Error al actualizar el cliente.' });
     }
