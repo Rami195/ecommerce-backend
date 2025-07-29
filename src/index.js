@@ -27,6 +27,9 @@ const direccion = require('./routes/direccion.routes')
 const tipoMedioPago = require('./routes/tipoMedioPago.routes')
 const pago = require('./routes/pago.routes')
 const estadoPago = require('./routes/estadoPago.routes')
+const envioPedido = require('./routes/envioPedido.routes')
+const listaFavorito = require('./routes/listaFavorito.routes')
+const listaFavoritoArticulo = require('./routes/listaFavoritoArticulo.routes')
 
 app.use('/api/cliente', clienteRouter);
 app.use('/api/articulos', articuloRouter);
@@ -41,6 +44,10 @@ app.use('/api/direccion',direccion);
 app.use('/api/tipoMedioPago',tipoMedioPago);
 app.use('/api/pago',pago);
 app.use('/api/estadoPago',estadoPago);
+app.use('/api/envioPedido',envioPedido);
+app.use('/api/listaFavorito',listaFavorito);
+app.use('/api/listaFavoritoArticulo',listaFavoritoArticulo);
+
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);

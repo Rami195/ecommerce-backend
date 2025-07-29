@@ -25,8 +25,7 @@ model Cliente {
   codTipoMedioPago     Int
   tipoMedioPago        TipoMedioPago @relation(fields:[codTipoMedioPago], references:[codTipoMedioPago])
   Pedido               Pedido[]
-  listaFav             ListaFavorito? 
-  codListaFavorito     Int?             @unique
+  listaFav             ListaFavorito[] 
   carritos             CarritoCompras[] // 1:N
 }
 
@@ -109,9 +108,10 @@ model CarritoCompras {
 model ListaFavorito{
   codListaFavorito        Int @id @default(autoincrement())
   nombreListaFavorito     String
-  codCliente              Int @unique
+  codCliente              Int 
   cliente                 Cliente @relation(fields:[codCliente], references:[codCliente])
-  articulo                Articulo[]
+  listaFavoritoArticulo   ListaFavoritoArticulo[] 
+
 }
 
 model Articulo {
@@ -122,9 +122,18 @@ model Articulo {
   precio                  Float
   fechaBajaArticulo       DateTime?
   articuloPedido          ArticuloPedido[]
-  listaFav                ListaFavorito[]
+  listaFavoritoArticulo   ListaFavoritoArticulo[] 
   categorias              Categoria[] @relation("ArticuloCategoria")
 
+}
+
+model ListaFavoritoArticulo {
+  listaFavoritosId Int
+  articuloId       Int
+  listaFavorito    ListaFavorito  @relation(fields: [listaFavoritosId], references: [codListaFavorito])
+  articulo         Articulo       @relation(fields: [articuloId], references: [codArticulo])
+
+  @@id([listaFavoritosId, articuloId])
 }
 
 model Categoria{
@@ -153,11 +162,13 @@ model ArticuloPedido {
 
 model EnvioPedido {
   codEnvio                Int @id @default(autoincrement())
+  codigoSeguimiento        Int
   empresaEnvio            String
   costoEnvio              Float
   fechaSalida             DateTime? 
   fechaEntregaEstimada    DateTime
-  fechaEntregaBaja        DateTime?
+  fechaEntregaReal        DateTime?
+  fechaHoraBjEnvioPedido  DateTime?
   codEstadoEnvio          Int
   codigoDireccion         Int
   estadoEnvio             EstadoEnvio @relation(fields:[codEstadoEnvio],references:[codEstadoEnvio])     
