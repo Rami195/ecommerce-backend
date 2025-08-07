@@ -51,26 +51,19 @@ exports.createPedido = async (req, res) => {
       },
     });
 
-    // Crear ArticuloPedido
-    for (const det of detalles) {
-      await prisma.articuloPedido.create({
-        data: {
-          codPedido: pedido.codPedido,
-          codCarritoCompra: codCarrito,
-          codArticulo: det.codArticulo,
-          cantidadArtPed: det.cantidad,
-          PrecioUnitario: det.precioUnitario,
-          montoArticuloPe: det.subtotal,
-        },
-      });
+    // Asociar artículos del carrito al nuevo pedido
+    await prisma.articuloPedido.updateMany({
+      where: { codCarritoCompra: codCarrito },
+      data: { codPedido: pedido.codPedido }
+    });
 
-      // Descontar stock
+    // Descontar stock
+    for (const art of articulos) {
       await prisma.articulo.update({
-        where: { codArticulo: det.codArticulo },
-        data: { stock: { decrement: det.cantidad } },
+        where: { codArticulo: art.codArticulo },
+        data: { stock: { decrement: art.cantidad } },
       });
     }
-
 
     await prisma.carritoCompras.update({
       where: { codCarritoCompra: codCarrito },
@@ -289,7 +282,7 @@ exports.getPedidos = async (req, res) => {
       include: {
         cliente: true,
         estadoPedido: true,
-            carritoCompra: true, 
+        carritoCompra: true,
         articuloPedido: {
           include: {
             articulo: true
