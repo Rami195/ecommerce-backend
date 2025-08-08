@@ -60,6 +60,7 @@ const createDireccion = async (req,res) => {
         res.status(201).json(nuevaDireccion);
 
     } catch (error) {
+        console.error(error); // 👈 MOSTRÁ EL ERROR REAL
         res.status(500).json({ error: 'Error al crear la direccion.' });       
     }
 }; 

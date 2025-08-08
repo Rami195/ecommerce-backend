@@ -10,11 +10,12 @@ const getListasPorCliente = async (req, res) => {
         codCliente: parseInt(codCliente)
       },
       include: {
-        articulos: { include: { articulo: true } } // trae los artículos 
+        listaFavoritoArticulo: { include: { articulo: true } } // trae los artículos 
       }
     });
     res.json(listas);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: 'Error al obtener listas' });
   }
 };
@@ -30,7 +31,7 @@ const getListasPorClienteyID = async (req, res) => {
         codListaFavorito: parseInt(codListaFavorito)
       },
       include: {
-        articulos: { include: { articulo: true } } // trae los artículos 
+        listaFavoritoArticulo: { include: { articulo: true } } // trae los artículos 
       }
     });
     res.json(lista);
@@ -43,12 +44,12 @@ const getListasPorClienteyID = async (req, res) => {
 
 // Crear una nueva lista de favoritos
 const createListaFavoritos = async (req, res) => {
-  const { nombre, codCliente } = req.body;
+  const { nombreListaFavorito, codCliente } = req.body;
 
   try {
     const nuevaLista = await prisma.listaFavorito.create({
       data: {
-        nombre,
+        nombreListaFavorito,
         codCliente,
       }
     });
@@ -61,7 +62,7 @@ const createListaFavoritos = async (req, res) => {
 
 // Editar una lista de favoritos
 const updateListaFavoritos = async (req, res) => {
-  const { nombre } = req.body;
+  const { nombreListaFavorito } = req.body;
   const {id} = req.params;
   try {
     
@@ -79,7 +80,7 @@ const updateListaFavoritos = async (req, res) => {
             codListaFavorito: parseInt(id)
         },
       data: {
-        nombre,
+        nombreListaFavorito,
       }
     });
     res.status(201).json(listaActualizada);

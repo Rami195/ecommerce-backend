@@ -46,9 +46,10 @@ const getEnviosPedidosById = async (req,res) => {
 
 const createEnvioPedido = async (req,res) =>{
     const {empresaEnvio, costoEnvio, codigoSeguimiento, fechaSalida, fechaEntregaEstimada, codEstadoEnvio, codigoDireccion} = req.body;
+          
     try {
         const existe = await prisma.envioPedido.findFirst({
-            where: { codigoSeguimiento: parseInt(codigoSeguimiento) }
+            where: { codigoSeguimiento: codigoSeguimiento, }
         });
         if (existe) {
             return res.status(400).json({ error: 'Este código de seguimiento ya está vinculado a un envío.' });
@@ -58,6 +59,7 @@ const createEnvioPedido = async (req,res) =>{
             data: {
                 empresaEnvio,
                 costoEnvio,
+                codigoSeguimiento,
                 fechaSalida,
                 fechaEntregaEstimada,
                 codEstadoEnvio,

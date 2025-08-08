@@ -8,8 +8,8 @@ const { getListasPorCliente, getListasPorClienteyID, createListaFavoritos, updat
 
 // Ruta para crear una nueva categoría
 router.post('/', createListaFavoritos);
-router.get('/', getListasPorCliente);
-router.get('/:id', getListasPorClienteyID);
+router.get('/:codCliente', getListasPorCliente);
+router.get('/:codCliente/:codListaFavorito', getListasPorClienteyID);
 router.delete('/:id',deleteListaFavoritos);
 router.put('/:id', updateListaFavoritos);
 

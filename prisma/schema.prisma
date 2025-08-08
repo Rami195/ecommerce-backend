@@ -22,8 +22,7 @@ model Cliente {
   direccion            Direccion[]   
   usuario              Usuario          @relation(fields: [codUsuario], references: [codUsuario])
   codUsuario           Int              @unique
-  codTipoMedioPago     Int
-  tipoMedioPago        TipoMedioPago @relation(fields:[codTipoMedioPago], references:[codTipoMedioPago])
+  tipoMediosPago       TipoMedioPago[]  // Relación muchos a muchos
   Pedido               Pedido[]
   listaFav             ListaFavorito[] 
   carritos             CarritoCompras[] // 1:N
@@ -162,7 +161,7 @@ model ArticuloPedido {
 
 model EnvioPedido {
   codEnvio                Int @id @default(autoincrement())
-  codigoSeguimiento        Int
+  codigoSeguimiento       String
   empresaEnvio            String
   costoEnvio              Float
   fechaSalida             DateTime? 

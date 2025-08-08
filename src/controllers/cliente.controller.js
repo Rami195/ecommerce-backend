@@ -61,7 +61,11 @@ const createCliente = async (req, res) => {
                 nombreCliente,
                 dni,
                 telefono,
-                codUsuario,
+                usuario: {
+                    connect: {
+                        codUsuario: codUsuario
+                        }
+                    },
                 carritos: {
                     create: {
                         montoCarritoCompra: 0,
