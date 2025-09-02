@@ -32,6 +32,7 @@ const envioPedido = require('./routes/envioPedido.routes')
 const estadoEnvio = require('./routes/estadoEnvio.routes')
 const listaFavorito = require('./routes/listaFavorito.routes')
 const listaFavoritoArticulo = require('./routes/listaFavoritoArticulo.routes')
+const authRouter = require('./routes/auth.routes');
 
 app.use('/api/cliente', clienteRouter);
 app.use('/api/articulos', articuloRouter);
@@ -51,6 +52,7 @@ app.use('/api/envioPedido',envioPedido);
 app.use('/api/estadoEnvio', estadoEnvio);
 app.use('/api/listaFavorito',listaFavorito);
 app.use('/api/listaFavoritoArticulo',listaFavoritoArticulo);
+app.use('/api/auth', authRouter);
 
 
 app.listen(PORT, () => {
